@@ -184,4 +184,59 @@
 </head>
 
 <body>
-  <
+    <div class="card">
+    <div class="brand">
+      <div class="logo">A</div>
+      <h1>Aidora <span>Login</span></h1>
+      <p class="subtitle">Connecting Help. Delivering Hope.</p>
+    </div>
+
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="Enter your email" required>
+
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Enter your password" required>
+
+      <button class="submit" type="submit">Login</button>
+      <p id="message"></p>
+    </form>
+    <p class="footer">Need an account? <a href="#" id="signupLink">Sign up</a></p>
+  </div>
+
+  <script>
+    const client = window.supabase.createClient(
+      "https://alwmquaohyfmgegthjnn.supabase.co",
+      "sb_publishable_g4wjIBtXVdwqf8ti7fxNMg_vwJ8JXi8"
+    );
+
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      message.className = "show";
+      message.textContent = "Logging in...";
+
+      const { error } = await client.auth.signInWithPassword({
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      });
+
+      if (error) {
+        message.className = "show error";
+        message.textContent = error.message;
+        return;
+      }
+
+      window.location.href = "index.html";
+    });
+
+    document.getElementById("signupLink").addEventListener("click", (event) => {
+      event.preventDefault();
+      message.className = "show";
+      message.textContent = "Signup form abhi add nahi hua hai.";
+    });
+  </script>
+</body>
+</html>
