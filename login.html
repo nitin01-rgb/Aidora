@@ -257,7 +257,7 @@
 
           if (data.session) {
             showMessage("Account created! Opening Aidora...", "success");
-            window.location.replace("index.html");
+            window.location.replace("home.html");
           } else {
             showMessage(
               "Account created! Check your email for a confirmation link, then return here to log in.",
@@ -274,7 +274,7 @@
           if (error) throw error;
 
           showMessage("Login successful! Opening Aidora...", "success");
-          window.location.replace("index.html");
+          window.location.replace("home.html");
         }
       } catch (error) {
         showMessage(error.message || "Something went wrong. Please try again.", "error");
@@ -285,7 +285,7 @@
 
     client.auth.getSession().then(({ data, error }) => {
       if (!error && data.session) {
-        window.location.replace("index.html");
+        window.location.replace("home.html");
       }
     });
   </script>
