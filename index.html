@@ -593,8 +593,28 @@
     }
   </style>
 
-  <!-- Supabase JS library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <!-- Supabase JS library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Login protection -->
+<script>
+  (async function () {
+    try {
+      const client = window.supabase.createClient(
+        "https://alwmquaohyfmgegthjnn.supabase.co",
+        "sb_publishable_g4wjIBtXVdwqf8ti7fxNMg_vwJ8JXi8"
+      );
+
+      const { data, error } = await client.auth.getSession();
+
+      if (error || !data.session) {
+        window.location.replace("login.html");
+      }
+    } catch (err) {
+      window.location.replace("login.html");
+    }
+  })();
+</script>
 </head>
 
 <body>
