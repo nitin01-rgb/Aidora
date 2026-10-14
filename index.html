@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,9 +30,7 @@
       padding: 0;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       min-height: 100vh;
@@ -63,9 +61,7 @@
       text-decoration: none;
     }
 
-    button, a {
-      -webkit-tap-highlight-color: transparent;
-    }
+    button, a { -webkit-tap-highlight-color: transparent; }
 
     .navbar {
       position: sticky;
@@ -124,9 +120,7 @@
       transition: color .2s;
     }
 
-    .nav-links > a:not(.nav-cta):hover {
-      color: var(--cyan);
-    }
+    .nav-links > a:not(.nav-cta):hover { color: var(--cyan); }
 
     .nav-cta, .button {
       display: inline-flex;
@@ -146,9 +140,7 @@
       box-shadow: 0 5px 28px rgba(69, 226, 218, .17);
     }
 
-    .nav-cta:hover, .button:hover {
-      transform: translateY(-2px);
-    }
+    .nav-cta:hover, .button:hover { transform: translateY(-2px); }
 
     .button-secondary {
       color: #e8f5ff;
@@ -158,9 +150,7 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    .button-secondary:hover {
-      background: rgba(255,255,255,.10);
-    }
+    .button-secondary:hover { background: rgba(255,255,255,.10); }
 
     .hero {
       position: relative;
@@ -174,10 +164,7 @@
       gap: 50px;
     }
 
-    .hero-copy {
-      position: relative;
-      z-index: 2;
-    }
+    .hero-copy { position: relative; z-index: 2; }
 
     .eyebrow {
       display: inline-flex;
@@ -226,11 +213,7 @@
       line-height: 1.9;
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 13px;
-    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; }
 
     .hero-note {
       display: flex;
@@ -241,10 +224,7 @@
       font-size: 11px;
     }
 
-    .avatar-stack {
-      display: flex;
-      align-items: center;
-    }
+    .avatar-stack { display: flex; align-items: center; }
 
     .avatar {
       display: grid;
@@ -300,11 +280,7 @@
       border-bottom: 1px solid rgba(255,255,255,.10);
     }
 
-    .panel-label {
-      color: #c4d5e5;
-      font-size: 12px;
-      font-weight: 700;
-    }
+    .panel-label { color: #c4d5e5; font-size: 12px; font-weight: 700; }
 
     .live-badge {
       padding: 5px 9px;
@@ -341,16 +317,8 @@
       font-size: 16px;
     }
 
-    .mini-stat strong {
-      display: block;
-      font-size: 23px;
-      line-height: 1.3;
-    }
-
-    .mini-stat span {
-      color: #94a9bc;
-      font-size: 10px;
-    }
+    .mini-stat strong { display: block; font-size: 23px; line-height: 1.3; }
+    .mini-stat span { color: #94a9bc; font-size: 10px; }
 
     .activity-title {
       margin: 21px 0 12px;
@@ -379,10 +347,7 @@
       background: rgba(104,160,255,.12);
     }
 
-    .activity-text {
-      flex: 1;
-      min-width: 0;
-    }
+    .activity-text { flex: 1; min-width: 0; }
 
     .activity-text strong {
       display: block;
@@ -390,16 +355,9 @@
       font-size: 11px;
     }
 
-    .activity-text span {
-      color: #91a8bc;
-      font-size: 10px;
-    }
+    .activity-text span { color: #91a8bc; font-size: 10px; }
 
-    .activity-tag {
-      color: var(--cyan);
-      font-size: 9px;
-      font-weight: 700;
-    }
+    .activity-tag { color: var(--cyan); font-size: 9px; font-weight: 700; }
 
     .floating-chip {
       position: absolute;
@@ -503,11 +461,7 @@
       font-size: 23px;
     }
 
-    .service-card h3 {
-      margin-bottom: 8px;
-      font-size: 17px;
-      font-weight: 700;
-    }
+    .service-card h3 { margin-bottom: 8px; font-size: 17px; font-weight: 700; }
 
     .service-card p {
       margin-bottom: 20px;
@@ -583,6 +537,7 @@
       .navbar { padding: 13px 5%; }
       .nav-inner { flex-wrap: wrap; gap: 13px; }
       .brand { font-size: 22px; }
+
       .nav-links {
         width: 100%;
         justify-content: flex-start;
@@ -590,6 +545,7 @@
         overflow-x: auto;
         padding: 3px 0 5px;
       }
+
       .nav-links > a:not(.nav-cta) { font-size: 12px; }
       .nav-cta { display: none; }
 
@@ -614,10 +570,7 @@
       .chip-two { left: -4px; bottom: 13px; }
       .section { padding: 40px 6% 65px; }
 
-      .section-heading {
-        display: block;
-      }
-
+      .section-heading { display: block; }
       .section-heading p { margin-top: 12px; }
       .service-grid { grid-template-columns: 1fr; }
       .service-card { min-height: auto; }
@@ -639,6 +592,9 @@
       }
     }
   </style>
+
+  <!-- Supabase JS library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -839,3 +795,4 @@
   </footer>
 </body>
 </html>
+```
