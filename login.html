@@ -283,11 +283,6 @@
       }
     });
 
-    client.auth.getSession().then(({ data, error }) => {
-      if (!error && data.session) {
-        window.location.replace("home.html");
-      }
-    });
   </script>
 </body>
 </html>
