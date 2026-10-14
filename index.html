@@ -2,361 +2,832 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#071522" />
-  <meta name="description" content="Aidora connects communities, volunteers, and relief resources during emergencies." />
-  <title>Aidora | Connecting Help. Delivering Hope.</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="Aidora connects emergency requests, volunteers, and relief resources.">
+  <title>Aidora — Connecting Help. Delivering Hope.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    * { box-sizing: border-box; }
+    :root {
+      --bg: #07111f;
+      --glass: rgba(255, 255, 255, 0.055);
+      --glass-hover: rgba(255, 255, 255, 0.09);
+      --border: rgba(255, 255, 255, 0.13);
+      --cyan: #62f5df;
+      --blue: #75baff;
+      --text: #f0f7ff;
+      --muted: #a5b7cb;
+    }
 
-    html { scroll-behavior: smooth; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #071522;
-      color: #edf7ff;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(ellipse at 15% 15%, rgba(0, 191, 178, .15), transparent 38%),
+        radial-gradient(ellipse at 85% 25%, rgba(64, 105, 255, .16), transparent 38%),
+        radial-gradient(ellipse at 50% 80%, rgba(0, 205, 255, .07), transparent 40%),
+        var(--bg);
+      overflow-x: hidden;
       line-height: 1.6;
     }
 
-    a { color: inherit; }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .15;
+      background-image: radial-gradient(rgba(255,255,255,.6) .6px, transparent .6px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+    }
 
-    .site-header {
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .navbar {
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 20;
+      width: 100%;
+      padding: 16px 5%;
+      background: rgba(7, 17, 31, .66);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    .nav-inner {
+      max-width: 1320px;
+      margin: auto;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      padding: 16px 6%;
-      background: rgba(7, 21, 34, .94);
-      border-bottom: 1px solid #ffffff18;
-      backdrop-filter: blur(14px);
+      justify-content: space-between;
+      gap: 24px;
     }
 
     .brand {
-      color: #60e0d2;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       font-size: 25px;
       font-weight: 800;
-      text-decoration: none;
-      letter-spacing: -.5px;
+      letter-spacing: -1px;
+      white-space: nowrap;
+    }
+
+    .brand-icon {
+      display: grid;
+      place-items: center;
+      width: 35px;
+      height: 35px;
+      border: 1px solid rgba(98,245,223,.45);
+      border-radius: 12px;
+      background: rgba(98,245,223,.12);
+      color: var(--cyan);
+      box-shadow: 0 0 24px rgba(98,245,223,.14);
     }
 
     .nav-links {
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
       align-items: center;
+      justify-content: flex-end;
+      gap: 28px;
     }
 
-    .nav-links a {
-      color: #c3d6e5;
-      text-decoration: none;
-      font-size: 14px;
+    .nav-links > a:not(.nav-cta) {
+      color: #c2d0df;
+      font-size: 13px;
       font-weight: 600;
+      transition: color .2s;
     }
 
-    .nav-links a:hover { color: #60e0d2; }
+    .nav-links > a:not(.nav-cta):hover {
+      color: var(--cyan);
+    }
 
-    .nav-links .nav-cta {
-      background: #60e0d2;
-      color: #071522;
-      padding: 9px 15px;
-      border-radius: 9px;
+    .nav-cta, .button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 19px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: transform .2s, background .2s, box-shadow .2s;
+    }
+
+    .nav-cta, .button-primary {
+      color: #04151b;
+      background: linear-gradient(135deg, #7bffe7, #4bd9e9);
+      box-shadow: 0 5px 28px rgba(69, 226, 218, .17);
+    }
+
+    .nav-cta:hover, .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-secondary {
+      color: #e8f5ff;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.19);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .button-secondary:hover {
+      background: rgba(255,255,255,.10);
     }
 
     .hero {
       position: relative;
-      overflow: hidden;
-      padding: 100px 24px 90px;
-      text-align: center;
-      background:
-        radial-gradient(ellipse at 50% 10%, #16465a 0%, transparent 60%),
-        linear-gradient(180deg, #0b2031, #071522);
+      max-width: 1320px;
+      min-height: 590px;
+      margin: 28px auto 0;
+      padding: 72px 6% 64px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items: center;
+      gap: 50px;
     }
 
-    .hero-content {
-      max-width: 850px;
-      margin: auto;
+    .hero-copy {
+      position: relative;
+      z-index: 2;
     }
 
     .eyebrow {
-      display: inline-block;
-      color: #8ce8dc;
-      border: 1px solid #60e0d255;
-      background: #60e0d210;
-      border-radius: 30px;
-      padding: 7px 14px;
-      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 13px;
+      border: 1px solid rgba(98,245,223,.25);
+      border-radius: 100px;
+      color: #9bffef;
+      background: rgba(98,245,223,.065);
+      backdrop-filter: blur(12px);
+      font-size: 10px;
       font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.4px;
     }
 
-    .hero h1 {
-      font-size: clamp(40px, 7vw, 72px);
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 25px 0 22px;
+      font-size: clamp(42px, 5.2vw, 70px);
+      font-weight: 800;
       line-height: 1.08;
-      letter-spacing: -2px;
-      margin: 24px 0;
+      letter-spacing: -3.7px;
     }
 
     .gradient-text {
-      color: #60e0d2;
+      background: linear-gradient(100deg, #65f6df 5%, #78d9ff 60%, #9da9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .hero p {
-      color: #b8ccdc;
-      font-size: 18px;
-      max-width: 670px;
-      margin: 0 auto 30px;
+    .hero-description {
+      max-width: 570px;
+      margin-bottom: 30px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.9;
     }
 
     .hero-actions {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 13px;
     }
 
-    .button-link {
-      display: inline-block;
-      padding: 13px 20px;
-      border-radius: 10px;
-      background: #60e0d2;
+    .hero-note {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 27px;
+      color: #91a9bd;
+      font-size: 11px;
+    }
+
+    .avatar-stack {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 27px;
+      height: 27px;
+      margin-right: -7px;
+      border: 2px solid #0b1b2b;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #75f4de, #5596ff);
       color: #071522;
-      text-decoration: none;
+      font-size: 9px;
       font-weight: 800;
-      border: 1px solid #60e0d2;
     }
 
-    .button-link:hover { filter: brightness(1.08); }
-
-    .button-outline {
-      color: #edf7ff;
-      background: #ffffff08;
-      border-color: #ffffff30;
+    .hero-visual {
+      position: relative;
+      min-height: 395px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
+    .orb {
+      position: absolute;
+      width: 310px;
+      height: 310px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(50,232,216,.18), rgba(80,116,255,.20));
+      filter: blur(35px);
+    }
+
+    .glass-panel {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 390px;
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,.19);
+      border-radius: 25px;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
+      box-shadow: 0 30px 90px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.12);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      transform: rotateY(-5deg) rotateX(2deg);
+    }
+
+    .panel-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+
+    .panel-label {
+      color: #c4d5e5;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .live-badge {
+      padding: 5px 9px;
+      border: 1px solid rgba(98,245,223,.23);
+      border-radius: 30px;
+      color: var(--cyan);
+      background: rgba(98,245,223,.08);
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .panel-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .mini-stat {
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 15px;
+      background: rgba(255,255,255,.045);
+    }
+
+    .mini-stat .icon {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      margin-bottom: 13px;
+      border-radius: 10px;
+      background: rgba(98,245,223,.11);
+      font-size: 16px;
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 23px;
+      line-height: 1.3;
+    }
+
+    .mini-stat span {
+      color: #94a9bc;
+      font-size: 10px;
+    }
+
+    .activity-title {
+      margin: 21px 0 12px;
+      color: #d9e6f2;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .activity {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .activity:last-child { border-bottom: 0; }
+
+    .activity-icon {
+      display: grid;
+      place-items: center;
+      width: 35px;
+      height: 35px;
+      flex-shrink: 0;
+      border-radius: 11px;
+      background: rgba(104,160,255,.12);
+    }
+
+    .activity-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .activity-text strong {
+      display: block;
+      color: #e8f1fa;
+      font-size: 11px;
+    }
+
+    .activity-text span {
+      color: #91a8bc;
+      font-size: 10px;
+    }
+
+    .activity-tag {
+      color: var(--cyan);
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .floating-chip {
+      position: absolute;
+      z-index: 3;
+      padding: 12px 15px;
+      border: 1px solid rgba(255,255,255,.17);
+      border-radius: 14px;
+      background: rgba(15,35,52,.72);
+      box-shadow: 0 15px 40px rgba(0,0,0,.2);
+      backdrop-filter: blur(20px);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .floating-chip span { color: var(--cyan); }
+    .chip-one { top: 35px; right: -7px; }
+    .chip-two { bottom: 32px; left: -15px; }
 
     .section {
-      max-width: 1150px;
+      max-width: 1320px;
       margin: auto;
-      padding: 70px 24px;
+      padding: 48px 6% 90px;
     }
 
     .section-heading {
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .section-kicker {
+      margin-bottom: 9px;
+      color: var(--cyan);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.7px;
     }
 
     .section-heading h2 {
-      font-size: clamp(28px, 4vw, 40px);
+      font-size: clamp(27px, 3vw, 38px);
       line-height: 1.2;
-      margin: 12px 0;
+      letter-spacing: -1.3px;
     }
 
-    .section-heading p,
-    .service-card p {
-      color: #a9bfd0;
+    .section-heading p {
+      max-width: 370px;
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .service-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
+      gap: 18px;
     }
 
     .service-card {
-      padding: 27px;
-      border-radius: 17px;
-      background: linear-gradient(145deg, #122d42, #0b2031);
-      border: 1px solid #ffffff1c;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+      min-height: 235px;
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.025));
+      box-shadow: inset 0 1px rgba(255,255,255,.07);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      transition: transform .25s, border-color .25s, background .25s;
+    }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      top: -65px;
+      right: -65px;
+      width: 145px;
+      height: 145px;
+      border-radius: 50%;
+      background: rgba(98,245,223,.08);
+      filter: blur(25px);
+      pointer-events: none;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(98,245,223,.4);
+      background: var(--glass-hover);
     }
 
     .service-icon {
-      width: 55px;
-      height: 55px;
       display: grid;
       place-items: center;
-      border-radius: 14px;
-      background: #60e0d218;
-      font-size: 27px;
-      margin-bottom: 17px;
+      width: 49px;
+      height: 49px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(98,245,223,.18);
+      border-radius: 15px;
+      background: rgba(98,245,223,.09);
+      font-size: 23px;
     }
 
     .service-card h3 {
-      margin: 0;
-      font-size: 21px;
+      margin-bottom: 8px;
+      font-size: 17px;
+      font-weight: 700;
     }
 
-    .service-card p { flex: 1; }
+    .service-card p {
+      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
 
     .card-link {
-      display: inline-block;
-      margin-top: 12px;
-      color: #60e0d2;
-      text-decoration: none;
-      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 700;
     }
 
-    .card-link:hover { text-decoration: underline; }
+    .card-link:hover { gap: 13px; }
 
     .mission {
-      margin: 0 24px 65px;
+      max-width: 1200px;
+      margin: 0 auto 75px;
       padding: 42px 24px;
-      border: 1px solid #60e0d233;
-      border-radius: 20px;
-      background: linear-gradient(120deg, #103144, #0d2435);
+      border: 1px solid rgba(98,245,223,.2);
+      border-radius: 24px;
+      background:
+        radial-gradient(ellipse at 15% 0%, rgba(98,245,223,.10), transparent 60%),
+        linear-gradient(120deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+      backdrop-filter: blur(24px);
       text-align: center;
     }
 
-    .mission-inner {
-      max-width: 750px;
-      margin: auto;
+    .mission h2 {
+      margin: 12px 0;
+      font-size: clamp(25px, 3vw, 36px);
+      letter-spacing: -1px;
     }
 
-    .mission h2 { font-size: 30px; margin: 0 0 12px; }
-    .mission p { color: #c0d3e1; }
+    .mission p {
+      max-width: 680px;
+      margin: 0 auto 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
 
-    .footer {
-      padding: 28px 20px;
+    footer {
+      padding: 27px 5%;
+      border-top: 1px solid rgba(255,255,255,.09);
+      background: rgba(4,12,23,.45);
       text-align: center;
-      color: #94adbf;
-      border-top: 1px solid #ffffff17;
-      font-size: 14px;
+      color: #8fa4b8;
+      font-size: 11px;
     }
 
-    .footer a {
-      color: #60e0d2;
-      text-decoration: none;
+    footer p + p { margin-top: 6px; }
+    footer a { color: var(--cyan); }
+
+    @media (max-width: 1000px) {
+      .hero {
+        grid-template-columns: 1fr 0.85fr;
+        gap: 25px;
+        padding-left: 4%;
+        padding-right: 4%;
+      }
+
+      h1 { font-size: clamp(42px, 5vw, 58px); }
+      .nav-links { gap: 16px; }
+      .chip-one { right: 0; }
+      .chip-two { left: 0; }
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 760px) {
+      .navbar { padding: 13px 5%; }
+      .nav-inner { flex-wrap: wrap; gap: 13px; }
+      .brand { font-size: 22px; }
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 18px;
+        overflow-x: auto;
+        padding: 3px 0 5px;
+      }
+      .nav-links > a:not(.nav-cta) { font-size: 12px; }
+      .nav-cta { display: none; }
+
+      .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 54px 6% 38px;
+        margin-top: 0;
+        gap: 25px;
+      }
+
+      h1 {
+        font-size: clamp(39px, 10vw, 60px);
+        letter-spacing: -2px;
+      }
+
+      .hero-description { font-size: 14px; }
+      .hero-visual { min-height: 390px; }
+      .glass-panel { max-width: 420px; transform: none; }
+      .chip-one { right: -4px; top: 14px; }
+      .chip-two { left: -4px; bottom: 13px; }
+      .section { padding: 40px 6% 65px; }
+
+      .section-heading {
+        display: block;
+      }
+
+      .section-heading p { margin-top: 12px; }
       .service-grid { grid-template-columns: 1fr; }
-      .site-header { justify-content: center; }
-      .nav-links { justify-content: center; gap: 14px; }
-      .hero { padding-top: 75px; }
+      .service-card { min-height: auto; }
+      .mission { margin: 0 5% 50px; padding: 32px 20px; }
+    }
+
+    @media (max-width: 380px) {
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .button { width: 100%; }
+      .eyebrow { font-size: 8px; letter-spacing: 1px; }
+      .hero-visual { min-height: 375px; }
+      .glass-panel { padding: 18px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
 
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html" aria-label="Aidora home">✚ Aidora</a>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="brand" aria-label="Aidora home">
+        <span class="brand-icon">✚</span>
+        <span>Aidora</span>
+      </a>
 
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="#services">Our Platform</a>
-      <a href="dashboard.html">Emergencies</a>
-      <a href="volunteers.html">Volunteers</a>
-      <a href="resources.html">Resources</a>
-      <a class="nav-cta" href="dashboard.html">Open Dashboard →</a>
-    </nav>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#platform">Platform</a>
+        <a href="dashboard.html">Emergencies</a>
+        <a href="volunteers.html">Volunteers</a>
+        <a href="resources.html">Resources</a>
+        <a href="dashboard.html" class="nav-cta">Open Dashboard <span>→</span></a>
+      </nav>
+    </div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="hero-content">
-        <span class="eyebrow">DISASTER RELIEF & COMMUNITY RESPONSE</span>
+      <div class="hero-copy">
+        <div class="eyebrow">
+          <span class="status-dot"></span>
+          DISASTER RELIEF & COMMUNITY RESPONSE
+        </div>
 
         <h1>
-          When Every Second Matters,<br />
+          When Every Second Matters,<br>
           <span class="gradient-text">Help Should Connect.</span>
         </h1>
 
-        <p>
+        <p class="hero-description">
           Aidora brings emergency requests, volunteers, and essential relief
-          resources together in one place to help communities coordinate
-          their response during difficult times.
+          resources together in one place — helping communities coordinate
+          support when every moment matters.
         </p>
 
         <div class="hero-actions">
-          <a class="button-link" href="dashboard.html">
-            Explore Emergency Dashboard →
+          <a href="dashboard.html" class="button button-primary">
+            Explore Emergency Dashboard <span>→</span>
           </a>
-          <a class="button-link button-outline" href="#services">
+          <a href="#platform" class="button button-secondary">
             Explore the Platform
           </a>
+        </div>
+
+        <div class="hero-note">
+          <div class="avatar-stack" aria-hidden="true">
+            <span class="avatar">A</span>
+            <span class="avatar">V</span>
+            <span class="avatar">R</span>
+          </div>
+          <span>One platform. Connected community response.</span>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="Aidora dashboard preview">
+        <div class="orb"></div>
+
+        <div class="floating-chip chip-one">
+          <span>✦</span> Community-first response
+        </div>
+
+        <div class="glass-panel">
+          <div class="panel-top">
+            <span class="panel-label">Aidora overview</span>
+            <span class="live-badge">DEMO PREVIEW</span>
+          </div>
+
+          <div class="panel-stats">
+            <div class="mini-stat">
+              <div class="icon">🚨</div>
+              <strong>24/7</strong>
+              <span>Response vision</span>
+            </div>
+            <div class="mini-stat">
+              <div class="icon">🤝</div>
+              <strong>Together</strong>
+              <span>Community powered</span>
+            </div>
+          </div>
+
+          <div class="activity-title">Platform modules</div>
+
+          <div class="activity">
+            <div class="activity-icon">📍</div>
+            <div class="activity-text">
+              <strong>Emergency requests</strong>
+              <span>Review and track reports</span>
+            </div>
+            <span class="activity-tag">01</span>
+          </div>
+
+          <div class="activity">
+            <div class="activity-icon">🫂</div>
+            <div class="activity-text">
+              <strong>Volunteer network</strong>
+              <span>Coordinate helping hands</span>
+            </div>
+            <span class="activity-tag">02</span>
+          </div>
+
+          <div class="activity">
+            <div class="activity-icon">📦</div>
+            <div class="activity-text">
+              <strong>Relief resources</strong>
+              <span>Monitor essential supplies</span>
+            </div>
+            <span class="activity-tag">03</span>
+          </div>
+        </div>
+
+        <div class="floating-chip chip-two">
+          <span>✧</span> Connecting help, delivering hope
         </div>
       </div>
     </section>
 
-    <section class="section" id="services">
+    <section class="section" id="platform">
       <div class="section-heading">
-        <span class="eyebrow">ONE PLATFORM, MANY WAYS TO HELP</span>
-        <h2>Relief coordination, made simpler.</h2>
+        <div>
+          <div class="section-kicker">THE AIDORA ECOSYSTEM</div>
+          <h2>One platform. Three ways to help.</h2>
+        </div>
         <p>
-          Explore Aidora's demo modules for coordinating emergencies,
-          volunteers, and essential supplies.
+          Purpose-built modules to help communities organize requests,
+          people, and supplies in one clear experience.
         </p>
       </div>
 
       <div class="service-grid">
         <article class="service-card">
-          <div class="service-icon" aria-hidden="true">🚨</div>
+          <div class="service-icon">🚨</div>
           <h3>Emergency Dashboard</h3>
           <p>
-            Review demo emergency requests, search reports, assign priorities,
-            and track their current status.
+            Review demo emergency reports, search requests, set priorities,
+            and manage their status from one dashboard.
           </p>
-          <a class="card-link" href="dashboard.html">
-            Open Emergencies →
+          <a href="dashboard.html" class="card-link">
+            Explore emergencies <span>→</span>
           </a>
         </article>
 
         <article class="service-card">
-          <div class="service-icon" aria-hidden="true">🤝</div>
+          <div class="service-icon">🤝</div>
           <h3>Volunteer Network</h3>
           <p>
-            Explore sample volunteer profiles and manage availability
-            within the demonstration interface.
+            Browse sample volunteer profiles, search the network,
+            and manage volunteer availability.
           </p>
-          <a class="card-link" href="volunteers.html">
-            Open Volunteers →
+          <a href="volunteers.html" class="card-link">
+            Meet the network <span>→</span>
           </a>
         </article>
 
         <article class="service-card">
-          <div class="service-icon" aria-hidden="true">📦</div>
+          <div class="service-icon">📦</div>
           <h3>Relief Resources</h3>
           <p>
-            Track demo inventory for food, water, medical supplies,
-            shelter essentials, and other relief items.
+            Review sample inventory, monitor stock levels, and
+            manage essential relief supplies.
           </p>
-          <a class="card-link" href="resources.html">
-            Open Resources →
+          <a href="resources.html" class="card-link">
+            View resources <span>→</span>
           </a>
         </article>
       </div>
     </section>
 
     <section class="mission">
-      <div class="mission-inner">
-        <span class="eyebrow">OUR MISSION</span>
-        <h2>Connecting Help. Delivering Hope.</h2>
-        <p>
-          We envision a world where communities can coordinate assistance
-          faster, share resources responsibly, and make it easier for
-          people to find the support they need during emergencies.
-        </p>
-        <a class="button-link" href="dashboard.html">
-          Explore Aidora
-        </a>
+      <div class="eyebrow">
+        <span class="status-dot"></span>
+        OUR MISSION
       </div>
+      <h2>Connecting Help. <span class="gradient-text">Delivering Hope.</span></h2>
+      <p>
+        We believe better coordination can help communities respond more
+        effectively. Aidora brings the key pieces together in one accessible
+        platform concept.
+      </p>
+      <a href="dashboard.html" class="button button-primary">
+        Explore Aidora <span>→</span>
+      </a>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer>
     <p><strong>Aidora</strong> — Connecting Help. Delivering Hope.</p>
     <p>
       <a href="dashboard.html">Emergencies</a> ·
