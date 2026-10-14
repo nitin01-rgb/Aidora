@@ -1,679 +1,475 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#071522" />
-  <meta name="description" content="Manage disaster relief supplies and resources with Aidora." />
-  <title>Aidora | Relief Resources</title>
-  <link rel="stylesheet" href="style.css" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#06111f">
+  <title>Aidora | Resources</title>
   <style>
-    [hidden] { display: none !important; }
-
-    .page {
-      max-width: 1200px;
-      margin: auto;
-      padding: 35px 24px;
+    :root {
+      --bg: #06111f;
+      --panel: rgba(15, 34, 55, .72);
+      --border: rgba(105, 214, 255, .2);
+      --cyan: #53e0ff;
+      --text: #eef8ff;
+      --muted: #9bb2c8;
+      --green: #62f5b0;
     }
 
-    .back {
-      display: inline-block;
-      color: #60e0d2;
-      text-decoration: none;
-      margin-bottom: 24px;
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(0, 174, 255, .16), transparent 40%),
+        radial-gradient(ellipse at 90% 35%, rgba(35, 93, 180, .16), transparent 38%),
+        var(--bg);
     }
 
-    .topbar, .section-head {
+    a { color: inherit; text-decoration: none; }
+
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 18px;
+      padding: 20px 7%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(5, 16, 30, .7);
+      backdrop-filter: blur(18px);
     }
 
-    .topbar h1 {
+    .logo { font-size: 25px; font-weight: 800; letter-spacing: -.8px; }
+    .logo span { color: var(--cyan); }
+    nav { display: flex; flex-wrap: wrap; gap: 20px; }
+    nav a { color: var(--muted); font-size: 14px; }
+    nav a:hover, nav a.active { color: var(--cyan); }
+
+    main { width: min(1100px, 90%); margin: 48px auto; }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
       margin: 12px 0;
-      font-size: clamp(30px, 5vw, 42px);
-      letter-spacing: -1px;
+      font-size: clamp(35px, 6vw, 56px);
+      letter-spacing: -2px;
     }
 
-    .muted { color: #a9bfd0; }
+    .intro { max-width: 670px; color: var(--muted); line-height: 1.7; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: linear-gradient(125deg, rgba(13, 54, 80, .7), rgba(12, 25, 45, .75));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+    }
+
+    .hero::after {
+      content: "✦";
+      position: absolute;
+      right: 7%;
+      top: 15%;
+      color: rgba(83, 224, 255, .15);
+      font-size: 125px;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      margin: 30px 0;
+      margin: 22px 0 35px;
     }
 
-    .stat, .panel, .resource-card {
-      background: rgba(18, 43, 64, .76);
-      border: 1px solid #ffffff1c;
-      border-radius: 16px;
+    .stat, .card, .request-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 19px;
       padding: 22px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .14);
     }
 
-    .stat-label { color: #a9bfd0; font-size: 14px; }
-    .stat-number { font-size: 32px; font-weight: 800; margin-top: 12px; }
+    .stat strong { display: block; color: var(--cyan); font-size: 29px; }
+    .stat span { color: var(--muted); font-size: 13px; }
 
-    .toolbar {
+    .section-head {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin: 22px 0;
+      margin: 34px 0 18px;
     }
 
-    .toolbar input, .toolbar select, .field input,
-    .field select, .field textarea, .stock-controls input {
-      width: 100%;
-      padding: 13px;
-      background: #10283d;
-      color: #edf7ff;
-      border: 1px solid #ffffff25;
-      border-radius: 10px;
-      font: inherit;
-    }
-
-    .toolbar input { flex: 1 1 230px; }
-    .toolbar select { flex: 0 1 190px; }
-
-    .toolbar input:focus, .toolbar select:focus,
-    .field input:focus, .field select:focus,
-    .field textarea:focus, .stock-controls input:focus {
-      outline: 2px solid #60e0d2;
-      outline-offset: 2px;
-    }
+    h2 { font-size: 23px; margin: 0; }
+    h3 { font-size: 18px; margin: 13px 0 9px; }
+    .section-desc { color: var(--muted); font-size: 13px; margin-top: 7px; }
 
     .resource-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 17px;
     }
 
-    .resource-card { min-width: 0; }
-
-    .resource-top {
+    .card {
       display: flex;
+      flex-direction: column;
       align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(83, 224, 255, .55);
+      box-shadow: 0 15px 40px rgba(0, 174, 255, .09);
     }
 
     .resource-icon {
-      font-size: 30px;
-      margin-bottom: 14px;
-    }
-
-    .resource-card h3 { margin: 0 0 8px; font-size: 19px; }
-
-    .badge {
-      display: inline-block;
-      padding: 7px 10px;
-      border-radius: 25px;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .good { background: #176b573b; color: #8ce8ce; }
-    .limited { background: #79551e55; color: #ffda91; }
-    .critical { background: #7d292955; color: #ffb6b6; }
-
-    .stock-number {
-      font-size: 27px;
-      font-weight: 800;
-      margin: 18px 0 8px;
-    }
-
-    .stock-track {
-      height: 8px;
-      background: #ffffff14;
-      border-radius: 20px;
-      overflow: hidden;
-      margin: 12px 0;
-    }
-
-    .stock-bar {
-      height: 100%;
-      border-radius: 20px;
-      background: #60e0d2;
-      transition: width .25s;
-    }
-
-    .stock-bar.limited { background: #ffc66d; }
-    .stock-bar.critical { background: #ff8585; }
-
-    .stock-controls {
+      width: 48px;
+      height: 48px;
       display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 8px;
-      margin-top: 16px;
-      align-items: center;
+      place-items: center;
+      border: 1px solid rgba(83, 224, 255, .25);
+      background: rgba(83, 224, 255, .08);
+      border-radius: 15px;
+      font-size: 23px;
     }
 
-    .stock-controls input { min-width: 0; padding: 10px; }
-    .stock-controls button { padding: 10px 12px; }
+    .card p { color: var(--muted); font-size: 14px; line-height: 1.65; flex-grow: 1; }
 
-    .secondary-button {
-      border: 1px solid #ffffff2b;
-      border-radius: 10px;
-      color: #edf7ff;
-      background: #ffffff0b;
-      cursor: pointer;
-      font: inherit;
+    .tag {
+      padding: 6px 9px;
+      border-radius: 20px;
+      background: rgba(98, 245, 176, .08);
+      border: 1px solid rgba(98, 245, 176, .2);
+      color: var(--green);
+      font-size: 11px;
       font-weight: 700;
     }
 
-    .secondary-button:hover { background: #ffffff17; }
+    .resource-link {
+      display: inline-block;
+      margin-top: 15px;
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .resource-link:hover { text-decoration: underline; }
+
+    .request-panel { margin-top: 35px; }
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 22px;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 16px;
     }
 
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    label { display: block; margin: 15px 0 7px; color: #c4d7e8; font-size: 13px; }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: rgba(3, 14, 27, .8);
+      color: var(--text);
+      font: inherit;
+      outline: none;
     }
 
-    .field label {
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(83, 224, 255, .1);
+    }
+
+    select option { background: #0b1b2b; }
+    textarea { resize: vertical; min-height: 95px; }
+    .full { grid-column: 1 / -1; }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 13px;
+      border: 0;
+      border-radius: 11px;
+      color: #03121d;
+      background: linear-gradient(100deg, #53e0ff, #76f5d0);
       font-size: 14px;
-      font-weight: 600;
-      color: #dceaf5;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s, filter .2s;
     }
 
-    .field textarea { min-height: 85px; resize: vertical; }
-    .field.full { grid-column: 1 / -1; }
-
-    .form-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .action-button { border: 0; cursor: pointer; font: inherit; }
+    button:hover { transform: translateY(-2px); filter: brightness(1.08); }
 
     .notice {
-      margin: 16px 0;
-      padding: 13px 15px;
-      border-radius: 10px;
-      color: #aaf3e9;
-      background: #60e0d210;
-      border: 1px solid #60e0d255;
+      padding: 14px;
+      margin-top: 18px;
+      border: 1px solid rgba(83, 224, 255, .18);
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(83, 224, 255, .04);
+      font-size: 12px;
+      line-height: 1.6;
     }
 
-    .empty {
-      grid-column: 1 / -1;
-      padding: 30px;
+    #requestMessage { color: var(--green); margin-top: 14px; font-size: 13px; }
+
+    #requestList { margin-top: 20px; }
+    .request-item { border-top: 1px solid var(--border); padding: 15px 0; }
+    .request-item strong { display: block; margin-bottom: 6px; }
+    .request-item p { color: var(--muted); margin: 0; font-size: 13px; line-height: 1.6; }
+
+    footer {
+      padding: 25px;
+      margin-top: 50px;
       text-align: center;
-      color: #a9bfd0;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      font-size: 12px;
     }
 
-    @media (max-width: 900px) {
-      .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 800px) {
+      .resource-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    @media (max-width: 620px) {
-      .resource-grid, .stats, .form-grid { grid-template-columns: 1fr; }
-      .field.full { grid-column: auto; }
-      .page { padding: 25px 16px; }
-      .stock-controls { grid-template-columns: 1fr 1fr; }
-      .stock-controls input { grid-column: 1 / -1; }
+    @media (max-width: 560px) {
+      header { padding: 18px 5%; }
+      main { margin-top: 30px; }
+      .stats, .resource-grid, .form-grid { grid-template-columns: 1fr; }
+      .hero { padding: 25px; }
+      .full { grid-column: auto; }
     }
   </style>
 </head>
-
 <body>
   <header>
-    <div class="logo">✚ Aidora</div>
+    <a class="logo" href="index.html">aidora<span>.</span></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="volunteers.html">Volunteers</a>
+      <a class="active" href="resources.html">Resources</a>
+    </nav>
   </header>
 
-  <main class="page">
-    <a class="back" href="index.html">← Back to Home</a>
-
-    <section class="topbar">
-      <div>
-        <div class="tag">SUPPLY COORDINATION</div>
-        <h1>Relief Resources</h1>
-        <p class="muted">
-          Track essential supplies and manage relief inventory.
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">Help starts with the right information</div>
+        <h1>Resources for<br>a stronger community.</h1>
+        <p class="intro">
+          Explore practical guidance for emergency preparedness, first aid,
+          food assistance, and community support.
         </p>
       </div>
-
-      <button class="button action-button" id="openFormBtn" type="button">
-        + Add Resource
-      </button>
     </section>
 
     <section class="stats">
-      <article class="stat">
-        <div class="stat-label">Resource Types</div>
-        <div class="stat-number" id="totalTypes">5</div>
+      <div class="stat">
+        <strong>06</strong>
+        <span>Resource categories</span>
+      </div>
+      <div class="stat">
+        <strong>Free</strong>
+        <span>Learning resources</span>
+      </div>
+      <div class="stat">
+        <strong>One</strong>
+        <span>Community, working together</span>
+      </div>
+    </section>
+
+    <div class="section-head">
+      <div>
+        <h2>Explore resources</h2>
+        <div class="section-desc">Trusted starting points for learning and support.</div>
+      </div>
+      <span class="eyebrow">Knowledge hub</span>
+    </div>
+
+    <section class="resource-grid">
+      <article class="card">
+        <div class="resource-icon">🩺</div>
+        <span class="tag">Health & Safety</span>
+        <h3>First Aid Basics</h3>
+        <p>Learn basic first-aid principles and how to prepare for common emergencies.</p>
+        <a class="resource-link" href="https://www.redcross.org/take-a-class/first-aid" target="_blank" rel="noopener noreferrer">Explore first aid ↗</a>
       </article>
-      <article class="stat">
-        <div class="stat-label">Total Units</div>
-        <div class="stat-number" id="totalUnits">0</div>
+
+      <article class="card">
+        <div class="resource-icon">🌪️</div>
+        <span class="tag">Preparedness</span>
+        <h3>Disaster Readiness</h3>
+        <p>Understand emergency planning, preparedness checklists, and safety guidance.</p>
+        <a class="resource-link" href="https://www.ready.gov/" target="_blank" rel="noopener noreferrer">View preparedness guide ↗</a>
       </article>
-      <article class="stat">
-        <div class="stat-label">Low Stock Alerts</div>
-        <div class="stat-number" id="lowStockCount">0</div>
+
+      <article class="card">
+        <div class="resource-icon">🥫</div>
+        <span class="tag">Basic Needs</span>
+        <h3>Food Assistance</h3>
+        <p>Find information about food assistance programs and community food support.</p>
+        <a class="resource-link" href="https://www.feedingamerica.org/find-your-local-foodbank" target="_blank" rel="noopener noreferrer">Find food bank information ↗</a>
+      </article>
+
+      <article class="card">
+        <div class="resource-icon">🤝</div>
+        <span class="tag">Community</span>
+        <h3>Volunteer Opportunities</h3>
+        <p>Discover ways to contribute your time and skills to community initiatives.</p>
+        <a class="resource-link" href="volunteers.html">Join Aidora volunteers ↗</a>
+      </article>
+
+      <article class="card">
+        <div class="resource-icon">🧠</div>
+        <span class="tag">Wellbeing</span>
+        <h3>Emotional Support</h3>
+        <p>Explore general wellbeing guidance and find professional support resources.</p>
+        <a class="resource-link" href="https://www.who.int/health-topics/mental-health" target="_blank" rel="noopener noreferrer">Explore wellbeing resources ↗</a>
+      </article>
+
+      <article class="card">
+        <div class="resource-icon">🚨</div>
+        <span class="tag">Emergency</span>
+        <h3>Emergency Information</h3>
+        <p>For immediate danger, contact your local emergency services. In India, the pan-India emergency number is 112.</p>
+        <a class="resource-link" href="https://112.gov.in/" target="_blank" rel="noopener noreferrer">India emergency services ↗</a>
       </article>
     </section>
 
-    <section class="panel" id="resourceFormPanel" hidden>
-      <h2>Add Relief Resource</h2>
-      <p class="muted">Register a supply in the inventory.</p>
+    <section class="request-panel">
+      <div class="eyebrow">Community contribution</div>
+      <h2 style="margin-top:10px">Suggest a resource</h2>
+      <p class="intro">Know a useful guide or community service? Add a suggestion to this demo list.</p>
 
       <form id="resourceForm">
         <div class="form-grid">
-          <div class="field">
-            <label for="resourceName">Resource name *</label>
-            <input id="resourceName" maxlength="100" required
-              placeholder="e.g. Drinking Water" />
+          <div>
+            <label for="resourceTitle">Resource title</label>
+            <input id="resourceTitle" name="title" maxlength="100" required placeholder="e.g. Local food support">
           </div>
-
-          <div class="field">
-            <label for="resourceCategory">Category *</label>
-            <select id="resourceCategory" required>
-              <option value="Water">Water</option>
-              <option value="Food">Food</option>
-              <option value="Medical">Medical</option>
-              <option value="Shelter">Shelter</option>
-              <option value="Hygiene">Hygiene</option>
-              <option value="Other">Other</option>
+          <div>
+            <label for="resourceCategory">Category</label>
+            <select id="resourceCategory" name="category" required>
+              <option value="">Select category</option>
+              <option>Health & Safety</option>
+              <option>Preparedness</option>
+              <option>Food Assistance</option>
+              <option>Volunteer Opportunities</option>
+              <option>Wellbeing</option>
+              <option>Other</option>
             </select>
           </div>
-
-          <div class="field">
-            <label for="resourceQuantity">Available quantity *</label>
-            <input id="resourceQuantity" type="number"
-              min="0" max="1000000" step="1" required value="0" />
+          <div class="full">
+            <label for="resourceUrl">Website URL (optional)</label>
+            <input id="resourceUrl" name="url" type="url" maxlength="500" placeholder="https://example.org">
           </div>
-
-          <div class="field">
-            <label for="resourceUnit">Unit *</label>
-            <select id="resourceUnit" required>
-              <option value="units">Units</option>
-              <option value="packs">Packs</option>
-              <option value="litres">Litres</option>
-              <option value="kg">Kilograms</option>
-              <option value="boxes">Boxes</option>
-              <option value="kits">Kits</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="resourceThreshold">Low-stock alert threshold *</label>
-            <input id="resourceThreshold" type="number"
-              min="0" max="1000000" step="1" required value="20" />
-          </div>
-
-          <div class="field">
-            <label for="resourceLocation">Storage location *</label>
-            <input id="resourceLocation" maxlength="120" required
-              placeholder="Warehouse or city" />
-          </div>
-
-          <div class="field full">
-            <label for="resourceNotes">Notes</label>
-            <textarea id="resourceNotes" maxlength="300"
-              placeholder="Optional details about the supply"></textarea>
+          <div class="full">
+            <label for="resourceDescription">Short description</label>
+            <textarea id="resourceDescription" name="description" maxlength="300" required placeholder="What will people learn or find?"></textarea>
           </div>
         </div>
-
-        <div class="form-actions">
-          <button class="button action-button" type="submit">
-            Save Resource
-          </button>
-          <button class="secondary-button" id="cancelFormBtn" type="button">
-            Cancel
-          </button>
-        </div>
+        <button type="submit">Add Resource Suggestion ↗</button>
+        <p id="requestMessage" role="status"></p>
       </form>
+
+      <div class="notice">
+        Prototype notice: suggestions appear only in this browser page session. They are not reviewed, published to a server, or guaranteed to be verified. Always check external resources and contact official services for urgent help.
+      </div>
+
+      <div id="requestList" aria-live="polite"></div>
     </section>
-
-    <div id="notice" class="notice" role="status" hidden></div>
-
-    <section class="toolbar">
-      <input id="searchInput" type="search"
-        placeholder="Search resources or locations..."
-        aria-label="Search resources" />
-
-      <select id="categoryFilter" aria-label="Filter category">
-        <option value="all">All categories</option>
-        <option value="Water">Water</option>
-        <option value="Food">Food</option>
-        <option value="Medical">Medical</option>
-        <option value="Shelter">Shelter</option>
-        <option value="Hygiene">Hygiene</option>
-        <option value="Other">Other</option>
-      </select>
-
-      <select id="stockFilter" aria-label="Filter stock level">
-        <option value="all">All stock levels</option>
-        <option value="low">Low stock only</option>
-        <option value="good">Adequate stock</option>
-      </select>
-    </section>
-
-    <section class="resource-grid" id="resourceGrid"
-      aria-live="polite" aria-label="Relief inventory"></section>
-
-    <p class="muted">
-      Demo mode: inventory changes are temporary and reset on refresh.
-      Database integration will be added in a later step.
-    </p>
   </main>
 
-  <footer>© 2026 Aidora · Connecting Help. Delivering Hope.</footer>
+  <footer>Aidora · Connecting Help. Delivering Hope.</footer>
 
   <script>
-    "use strict";
-
-    const resources = [
-      {
-        id: 1, name: "Drinking Water", category: "Water",
-        quantity: 120, unit: "litres", threshold: 30,
-        location: "Jaipur Relief Center", notes: "Sample inventory."
-      },
-      {
-        id: 2, name: "Food Packets", category: "Food",
-        quantity: 18, unit: "packs", threshold: 25,
-        location: "Ajmer Distribution Center", notes: "Sample inventory."
-      },
-      {
-        id: 3, name: "First Aid Kits", category: "Medical",
-        quantity: 45, unit: "kits", threshold: 10,
-        location: "Jaipur Medical Store", notes: "Sample inventory."
-      },
-      {
-        id: 4, name: "Blankets", category: "Shelter",
-        quantity: 8, unit: "units", threshold: 15,
-        location: "Kota Relief Warehouse", notes: "Sample inventory."
-      },
-      {
-        id: 5, name: "Hygiene Kits", category: "Hygiene",
-        quantity: 60, unit: "kits", threshold: 15,
-        location: "Udaipur Relief Center", notes: "Sample inventory."
-      }
-    ];
-
-    let nextId = 6;
-
-    const grid = document.getElementById("resourceGrid");
+    const suggestions = [];
     const form = document.getElementById("resourceForm");
-    const formPanel = document.getElementById("resourceFormPanel");
-    const searchInput = document.getElementById("searchInput");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const stockFilter = document.getElementById("stockFilter");
-    const notice = document.getElementById("notice");
+    const message = document.getElementById("requestMessage");
+    const list = document.getElementById("requestList");
 
-    function el(tag, className, text) {
-      const node = document.createElement(tag);
-      if (className) node.className = className;
-      if (text !== undefined) node.textContent = text;
-      return node;
-    }
+    function renderSuggestions() {
+      list.replaceChildren();
 
-    function showNotice(message) {
-      notice.textContent = message;
-      notice.hidden = false;
-    }
+      suggestions.forEach((item) => {
+        const article = document.createElement("article");
+        article.className = "request-item";
 
-    function isLowStock(resource) {
-      return resource.quantity <= resource.threshold;
-    }
+        const title = document.createElement("strong");
+        title.textContent = item.title + " · " + item.category;
 
-    function getStockLevel(resource) {
-      if (resource.quantity === 0) {
-        return { label: "Out of Stock", className: "critical" };
-      }
-      if (isLowStock(resource)) {
-        return { label: "Low Stock", className: "limited" };
-      }
-      return { label: "In Stock", className: "good" };
-    }
+        const description = document.createElement("p");
+        description.textContent = item.description;
 
-    function updateStats() {
-      document.getElementById("totalTypes").textContent = resources.length;
+        article.append(title, description);
 
-      const totalUnits = resources.reduce(
-        (sum, resource) => sum + resource.quantity, 0
-      );
+        if (item.url) {
+          const link = document.createElement("a");
+          link.className = "resource-link";
+          link.href = item.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "Open suggested resource ↗";
+          article.appendChild(link);
+        }
 
-      document.getElementById("totalUnits").textContent =
-        totalUnits.toLocaleString();
-
-      document.getElementById("lowStockCount").textContent =
-        resources.filter(isLowStock).length;
-    }
-
-    function renderResources() {
-      const query = searchInput.value.trim().toLowerCase();
-      const category = categoryFilter.value;
-      const stock = stockFilter.value;
-
-      const filtered = resources.filter(resource => {
-        const text = [
-          resource.name,
-          resource.category,
-          resource.location,
-          resource.notes
-        ].join(" ").toLowerCase();
-
-        const matchesSearch = text.includes(query);
-        const matchesCategory =
-          category === "all" || resource.category === category;
-        const low = isLowStock(resource);
-        const matchesStock =
-          stock === "all" ||
-          (stock === "low" && low) ||
-          (stock === "good" && !low);
-
-        return matchesSearch && matchesCategory && matchesStock;
+        list.appendChild(article);
       });
-
-      grid.replaceChildren();
-
-      if (filtered.length === 0) {
-        grid.appendChild(el(
-          "div",
-          "empty",
-          "No resources found. Try changing the search or filters."
-        ));
-      }
-
-      filtered.forEach(resource => {
-        const card = el("article", "resource-card");
-        const top = el("div", "resource-top");
-        const left = el("div");
-        const iconMap = {
-          Water: "💧",
-          Food: "🥫",
-          Medical: "🩺",
-          Shelter: "⛺",
-          Hygiene: "🧼",
-          Other: "📦"
-        };
-
-        left.append(
-          el("div", "resource-icon", iconMap[resource.category] || "📦"),
-          el("h3", "", resource.name),
-          el("p", "muted", resource.category)
-        );
-
-        const level = getStockLevel(resource);
-        const badge = el(
-          "span", "badge " + level.className, level.label
-        );
-
-        top.append(left, badge);
-
-        const quantity = el(
-          "div",
-          "stock-number",
-          resource.quantity.toLocaleString() + " " + resource.unit
-        );
-
-        const stockDescription = el(
-          "p",
-          "muted",
-          "Alert threshold: " + resource.threshold + " " + resource.unit
-        );
-
-        const track = el("div", "stock-track");
-        track.setAttribute("role", "progressbar");
-        track.setAttribute("aria-label", resource.name + " stock level");
-
-        const bar = el("div", "stock-bar");
-        const ratio = resource.threshold > 0
-          ? resource.quantity / (resource.threshold * 2)
-          : (resource.quantity > 0 ? 1 : 0);
-
-        const percentage = Math.max(0, Math.min(100, ratio * 100));
-        bar.style.width = percentage + "%";
-
-        if (level.className === "limited") bar.classList.add("limited");
-        if (level.className === "critical") bar.classList.add("critical");
-
-        track.setAttribute("aria-valuemin", "0");
-        track.setAttribute("aria-valuemax", "100");
-        track.setAttribute("aria-valuenow", String(Math.round(percentage)));
-        track.appendChild(bar);
-
-        const location = el(
-          "p", "muted", "📍 " + resource.location
-        );
-
-        const notes = el(
-          "p", "muted", resource.notes || "No additional notes."
-        );
-
-        const controls = el("div", "stock-controls");
-        const amount = document.createElement("input");
-        amount.type = "number";
-        amount.min = "1";
-        amount.max = "1000000";
-        amount.step = "1";
-        amount.value = "1";
-        amount.setAttribute(
-          "aria-label", "Quantity to update for " + resource.name
-        );
-
-        const addButton = el("button", "secondary-button", "+ Add");
-        addButton.type = "button";
-
-        const removeButton = el("button", "secondary-button", "− Remove");
-        removeButton.type = "button";
-
-        addButton.addEventListener("click", () => {
-          const value = Number(amount.value);
-          if (!Number.isInteger(value) || value < 1) {
-            showNotice("Enter a whole number greater than zero.");
-            return;
-          }
-          if (resource.quantity + value > 1000000) {
-            showNotice("Quantity exceeds the allowed demo limit.");
-            return;
-          }
-
-          resource.quantity += value;
-          renderResources();
-          showNotice(resource.name + " stock increased by " + value + ".");
-        });
-
-        removeButton.addEventListener("click", () => {
-          const value = Number(amount.value);
-          if (!Number.isInteger(value) || value < 1) {
-            showNotice("Enter a whole number greater than zero.");
-            return;
-          }
-          if (value > resource.quantity) {
-            showNotice("Cannot remove more than the available stock.");
-            return;
-          }
-
-          resource.quantity -= value;
-          renderResources();
-          showNotice(resource.name + " stock reduced by " + value + ".");
-        });
-
-        controls.append(amount, addButton, removeButton);
-
-        card.append(top, quantity, stockDescription, track, location, notes, controls);
-        grid.appendChild(card);
-      });
-
-      updateStats();
     }
 
-    document.getElementById("openFormBtn").addEventListener("click", () => {
-      formPanel.hidden = false;
-      notice.hidden = true;
-      formPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-      document.getElementById("resourceName").focus();
-    });
-
-    document.getElementById("cancelFormBtn").addEventListener("click", () => {
-      form.reset();
-      formPanel.hidden = true;
-      notice.hidden = true;
-    });
-
-    form.addEventListener("submit", event => {
+    form.addEventListener("submit", function(event) {
       event.preventDefault();
 
-      const name = document.getElementById("resourceName").value.trim();
-      const category = document.getElementById("resourceCategory").value;
-      const quantity = Number(document.getElementById("resourceQuantity").value);
-      const unit = document.getElementById("resourceUnit").value;
-      const threshold = Number(document.getElementById("resourceThreshold").value);
-      const location = document.getElementById("resourceLocation").value.trim();
-      const notes = document.getElementById("resourceNotes").value.trim();
+      const data = new FormData(form);
+      const title = String(data.get("title") || "").trim();
+      const category = String(data.get("category") || "");
+      const url = String(data.get("url") || "").trim();
+      const description = String(data.get("description") || "").trim();
 
-      if (
-        !name || !location ||
-        !Number.isInteger(quantity) || quantity < 0 || quantity > 1000000 ||
-        !Number.isInteger(threshold) || threshold < 0 || threshold > 1000000
-      ) {
-        showNotice("Check the resource details and enter valid whole-number quantities.");
+      if (!title || !category || !description) {
+        message.textContent = "Please complete the required fields.";
         return;
       }
 
-      resources.unshift({
-        id: nextId++,
-        name,
-        category,
-        quantity,
-        unit,
-        threshold,
-        location,
-        notes: notes || "Newly registered resource."
-      });
+      if (url) {
+        try {
+          const parsed = new URL(url);
+          if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+            message.textContent = "Please enter a valid HTTP or HTTPS website URL.";
+            return;
+          }
+        } catch {
+          message.textContent = "Please enter a valid website URL.";
+          return;
+        }
+      }
 
+      suggestions.unshift({ title, category, url, description });
+      renderSuggestions();
       form.reset();
-      formPanel.hidden = true;
-      searchInput.value = "";
-      categoryFilter.value = "all";
-      stockFilter.value = "all";
-
-      renderResources();
-      showNotice("Resource added successfully in demo mode.");
+      message.textContent = "Suggestion added to this demo page session.";
     });
-
-    searchInput.addEventListener("input", renderResources);
-    categoryFilter.addEventListener("change", renderResources);
-    stockFilter.addEventListener("change", renderResources);
-
-    renderResources();
   </script>
 </body>
 </html>
