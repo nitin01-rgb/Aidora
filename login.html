@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aidora | Login</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #f4f8ff;
+      background:
+        radial-gradient(circle at top left, #123c60, transparent 40%),
+        linear-gradient(135deg, #07111f, #0b1c30);
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      padding: 34px;
+      border: 1px solid rgba(91, 213, 255, 0.25);
+      border-radius: 22px;
+      background: rgba(15, 32, 52, 0.94);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .logo {
+      display: inline-grid;
+      place-items: center;
+      width: 56px;
+      height: 56px;
+      margin-bottom: 12px;
+      border-radius: 16px;
+      background: #35c8f2;
+      color: #07111f;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: 30px;
+      letter-spacing: -1px;
+    }
+
+    h1 span {
+      color: #43d3ff;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #a9bbd0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 5px;
+      margin-bottom: 24px;
+      border-radius: 12px;
+      background: #091626;
+    }
+
+    .tab {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px;
+      color: #a9bbd0;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: #35c8f2;
+      color: #061321;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 8px;
+      font-size: 13px;
+      color: #dbe7f5;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #30445c;
+      border-radius: 10px;
+      outline: none;
+      color: white;
+      background: #091626;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #43d3ff;
+      box-shadow: 0 0 0 3px rgba(67, 211, 255, 0.1);
+    }
+
+    .submit {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #35c8f2;
+      color: #061321;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .submit:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    #message {
+      display: none;
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    #message.show {
+      display: block;
+    }
+
+    #message.error {
+      background: rgba(255, 85, 85, 0.12);
+      color: #ffaaaa;
+    }
+
+    #message.success {
+      background: rgba(58, 220, 160, 0.12);
+      color: #8af0c8;
+    }
+
+    .footer {
+      margin-top: 22px;
+      color: #8397ae;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .footer a {
+      color: #43d3ff;
+      text-decoration: none;
+    }
+
+    @media (max-width: 420px) {
+      .card {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <
