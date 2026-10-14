@@ -5,93 +5,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#071522" />
-  <meta name="description" content="Aidora connects people in need with volunteers and emergency relief resources." />
+
+  <meta
+    name="description"
+    content="Aidora connects people in need with volunteers and emergency relief resources."
+  />
+
   <title>Aidora | Emergency Relief Platform</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      color: #edf7ff;
-      background: #071522;
-    }
-    header {
-      padding: 22px 7%;
-      border-bottom: 1px solid #ffffff18;
-      background: #10283dcc;
-    }
-    .logo { font-size: 27px; font-weight: 800; color: #60e0d2; }
-    main { max-width: 1100px; margin: auto; padding: 65px 24px; }
-    .tag {
-      color: #60e0d2;
-      letter-spacing: 2px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    h1 { font-size: clamp(38px, 7vw, 68px); margin: 18px 0; }
-    h1 span { color: #60e0d2; }
-    p { color: #a9bfd0; line-height: 1.8; }
-    .hero { max-width: 680px; }
-    .button {
-      display: inline-block;
-      margin-top: 18px;
-      padding: 14px 22px;
-      color: #071522;
-      background: #60e0d2;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 18px;
-      margin-top: 55px;
-    }
-    .card {
-      padding: 24px;
-      background: #ffffff0b;
-      border: 1px solid #ffffff1c;
-      border-radius: 18px;
-    }
-    .card h2 { font-size: 18px; }
-    footer { padding: 25px; text-align: center; color: #8ba5b9; }
-  </style>
+
+  <!-- External CSS file -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Small icon for the browser tab -->
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9A%A8%3C/text%3E%3C/svg%3E"
+  />
 </head>
+
 <body>
+  <!-- Navigation -->
   <header>
     <div class="logo">✚ Aidora</div>
   </header>
 
+  <!-- Main hero section -->
   <main>
     <section class="hero">
       <div class="tag">CIVICTECH · DISASTER RESPONSE</div>
-      <h1>When crisis strikes, <span>help connects.</span></h1>
+
+      <h1>
+        When crisis strikes,
+        <span>help connects.</span>
+      </h1>
+
       <p>
         Aidora is a disaster relief platform designed to connect people
         in need with volunteers, emergency supplies, and relief teams.
         Together, we can coordinate support when it matters most.
       </p>
-      <a class="button" href="#services">Explore Aidora →</a>
+
+      <a class="button" href="#services">
+        Explore Aidora →
+      </a>
     </section>
 
+    <!-- Services -->
     <section class="cards" id="services">
       <article class="card">
         <h2>🚨 Emergency Requests</h2>
-        <p>Organize and track requests for urgent assistance.</p>
+        <p>
+          Organize and track requests for urgent assistance during
+          emergencies and disasters.
+        </p>
       </article>
+
       <article class="card">
         <h2>🤝 Volunteers</h2>
-        <p>Help coordinate volunteers for relief activities.</p>
+        <p>
+          Connect volunteers with relief activities and communities
+          that need support.
+        </p>
       </article>
+
       <article class="card">
         <h2>📦 Relief Resources</h2>
-        <p>Keep essential supplies organized for response teams.</p>
+        <p>
+          Keep essential supplies organized to support emergency
+          response and relief teams.
+        </p>
       </article>
     </section>
   </main>
 
-  <footer>© 2026 Aidora · Connecting Help. Delivering Hope.</footer>
+  <!-- Footer -->
+  <footer>
+    © 2026 Aidora · Connecting Help. Delivering Hope.
+  </footer>
 </body>
 </html>
