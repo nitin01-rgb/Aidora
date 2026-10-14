@@ -5,82 +5,366 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#071522" />
-
-  <meta
-    name="description"
-    content="Aidora connects people in need with volunteers and emergency relief resources."
-  />
-
-  <title>Aidora | Emergency Relief Platform</title>
-
-  <!-- External CSS file -->
+  <meta name="description" content="Aidora connects communities, volunteers, and relief resources during emergencies." />
+  <title>Aidora | Connecting Help. Delivering Hope.</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Small icon for the browser tab -->
-  <link
-    rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9A%A8%3C/text%3E%3C/svg%3E"
-  />
+  <style>
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #071522;
+      color: #edf7ff;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 16px 6%;
+      background: rgba(7, 21, 34, .94);
+      border-bottom: 1px solid #ffffff18;
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      color: #60e0d2;
+      font-size: 25px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #c3d6e5;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover { color: #60e0d2; }
+
+    .nav-links .nav-cta {
+      background: #60e0d2;
+      color: #071522;
+      padding: 9px 15px;
+      border-radius: 9px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 100px 24px 90px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 50% 10%, #16465a 0%, transparent 60%),
+        linear-gradient(180deg, #0b2031, #071522);
+    }
+
+    .hero-content {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: #8ce8dc;
+      border: 1px solid #60e0d255;
+      background: #60e0d210;
+      border-radius: 30px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 72px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin: 24px 0;
+    }
+
+    .gradient-text {
+      color: #60e0d2;
+    }
+
+    .hero p {
+      color: #b8ccdc;
+      font-size: 18px;
+      max-width: 670px;
+      margin: 0 auto 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .button-link {
+      display: inline-block;
+      padding: 13px 20px;
+      border-radius: 10px;
+      background: #60e0d2;
+      color: #071522;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid #60e0d2;
+    }
+
+    .button-link:hover { filter: brightness(1.08); }
+
+    .button-outline {
+      color: #edf7ff;
+      background: #ffffff08;
+      border-color: #ffffff30;
+    }
+
+    .section {
+      max-width: 1150px;
+      margin: auto;
+      padding: 70px 24px;
+    }
+
+    .section-heading {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 35px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.2;
+      margin: 12px 0;
+    }
+
+    .section-heading p,
+    .service-card p {
+      color: #a9bfd0;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .service-card {
+      padding: 27px;
+      border-radius: 17px;
+      background: linear-gradient(145deg, #122d42, #0b2031);
+      border: 1px solid #ffffff1c;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .service-icon {
+      width: 55px;
+      height: 55px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: #60e0d218;
+      font-size: 27px;
+      margin-bottom: 17px;
+    }
+
+    .service-card h3 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .service-card p { flex: 1; }
+
+    .card-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: #60e0d2;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .card-link:hover { text-decoration: underline; }
+
+    .mission {
+      margin: 0 24px 65px;
+      padding: 42px 24px;
+      border: 1px solid #60e0d233;
+      border-radius: 20px;
+      background: linear-gradient(120deg, #103144, #0d2435);
+      text-align: center;
+    }
+
+    .mission-inner {
+      max-width: 750px;
+      margin: auto;
+    }
+
+    .mission h2 { font-size: 30px; margin: 0 0 12px; }
+    .mission p { color: #c0d3e1; }
+
+    .footer {
+      padding: 28px 20px;
+      text-align: center;
+      color: #94adbf;
+      border-top: 1px solid #ffffff17;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #60e0d2;
+      text-decoration: none;
+    }
+
+    @media (max-width: 800px) {
+      .service-grid { grid-template-columns: 1fr; }
+      .site-header { justify-content: center; }
+      .nav-links { justify-content: center; gap: 14px; }
+      .hero { padding-top: 75px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Navigation -->
-  <header>
-    <div class="logo">✚ Aidora</div>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Aidora home">✚ Aidora</a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#services">Our Platform</a>
+      <a href="dashboard.html">Emergencies</a>
+      <a href="volunteers.html">Volunteers</a>
+      <a href="resources.html">Resources</a>
+      <a class="nav-cta" href="dashboard.html">Open Dashboard →</a>
+    </nav>
   </header>
 
-  <!-- Main hero section -->
   <main>
     <section class="hero">
-      <div class="tag">CIVICTECH · DISASTER RESPONSE</div>
+      <div class="hero-content">
+        <span class="eyebrow">DISASTER RELIEF & COMMUNITY RESPONSE</span>
 
-      <h1>
-        When crisis strikes,
-        <span>help connects.</span>
-      </h1>
+        <h1>
+          When Every Second Matters,<br />
+          <span class="gradient-text">Help Should Connect.</span>
+        </h1>
 
-      <p>
-        Aidora is a disaster relief platform designed to connect people
-        in need with volunteers, emergency supplies, and relief teams.
-        Together, we can coordinate support when it matters most.
-      </p>
+        <p>
+          Aidora brings emergency requests, volunteers, and essential relief
+          resources together in one place to help communities coordinate
+          their response during difficult times.
+        </p>
 
-      <a class="button" href="#services">
-        Explore Aidora →
-      </a>
+        <div class="hero-actions">
+          <a class="button-link" href="dashboard.html">
+            Explore Emergency Dashboard →
+          </a>
+          <a class="button-link button-outline" href="#services">
+            Explore the Platform
+          </a>
+        </div>
+      </div>
     </section>
 
-    <!-- Services -->
-    <section class="cards" id="services">
-      <article class="card">
-        <h2>🚨 Emergency Requests</h2>
+    <section class="section" id="services">
+      <div class="section-heading">
+        <span class="eyebrow">ONE PLATFORM, MANY WAYS TO HELP</span>
+        <h2>Relief coordination, made simpler.</h2>
         <p>
-          Organize and track requests for urgent assistance during
-          emergencies and disasters.
+          Explore Aidora's demo modules for coordinating emergencies,
+          volunteers, and essential supplies.
         </p>
-      </article>
+      </div>
 
-      <article class="card">
-        <h2>🤝 Volunteers</h2>
-        <p>
-          Connect volunteers with relief activities and communities
-          that need support.
-        </p>
-      </article>
+      <div class="service-grid">
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">🚨</div>
+          <h3>Emergency Dashboard</h3>
+          <p>
+            Review demo emergency requests, search reports, assign priorities,
+            and track their current status.
+          </p>
+          <a class="card-link" href="dashboard.html">
+            Open Emergencies →
+          </a>
+        </article>
 
-      <article class="card">
-        <h2>📦 Relief Resources</h2>
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">🤝</div>
+          <h3>Volunteer Network</h3>
+          <p>
+            Explore sample volunteer profiles and manage availability
+            within the demonstration interface.
+          </p>
+          <a class="card-link" href="volunteers.html">
+            Open Volunteers →
+          </a>
+        </article>
+
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">📦</div>
+          <h3>Relief Resources</h3>
+          <p>
+            Track demo inventory for food, water, medical supplies,
+            shelter essentials, and other relief items.
+          </p>
+          <a class="card-link" href="resources.html">
+            Open Resources →
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section class="mission">
+      <div class="mission-inner">
+        <span class="eyebrow">OUR MISSION</span>
+        <h2>Connecting Help. Delivering Hope.</h2>
         <p>
-          Keep essential supplies organized to support emergency
-          response and relief teams.
+          We envision a world where communities can coordinate assistance
+          faster, share resources responsibly, and make it easier for
+          people to find the support they need during emergencies.
         </p>
-      </article>
+        <a class="button-link" href="dashboard.html">
+          Explore Aidora
+        </a>
+      </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    © 2026 Aidora · Connecting Help. Delivering Hope.
+  <footer class="footer">
+    <p><strong>Aidora</strong> — Connecting Help. Delivering Hope.</p>
+    <p>
+      <a href="dashboard.html">Emergencies</a> ·
+      <a href="volunteers.html">Volunteers</a> ·
+      <a href="resources.html">Resources</a>
+    </p>
+    <p>© 2026 Aidora · Hackathon Demo</p>
+    <p>Demo interface only — not an official emergency reporting service.</p>
   </footer>
 </body>
 </html>
