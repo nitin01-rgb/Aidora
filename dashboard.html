@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#071522" />
+  <title>Aidora | Emergency Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .dashboard { max-width: 1200px; margin: auto; padding: 35px 24px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .topbar h1 { font-size: 34px; margin: 10px 0; letter-spacing: -1px; }
+    .muted { color: #a9bfd0; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 28px 0; }
+    .stat { background: rgba(18,43,64,.72); border: 1px solid #ffffff1c; border-radius: 16px; padding: 22px; }
+    .stat-label { color: #a9bfd0; font-size: 14px; }
+    .stat-number { font-size: 32px; font-weight: 800; margin-top: 12px; }
+    .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0; }
+    .toolbar input, .toolbar select, .request select {
+      background: #10283d; color: #edf7ff; border: 1px solid #ffffff25;
+      border-radius: 10px; padding: 12px; font: inherit;
+    }
+    .toolbar input { flex: 1; min-width: 180px; }
+    .toolbar select { min-width: 150px; }
+    .request-list { display: grid; gap: 14px; }
+    .request { background: rgba(18,43,64,.72); border: 1px solid #ffffff1c; border-radius: 16px; padding: 20px; }
+    .request-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .request h3 { margin: 0 0 8px; }
+    .badge { display: inline-block; border-radius: 30px; padding: 6px 10px; font-size: 12px; font-weight: bold; }
+    .high { color: #ffb6b6; background: #7d292955; }
+    .medium { color: #ffda91; background: #79551e55; }
+    .low { color: #8ce8ce; background: #176b5755; }
+    .status { margin-top: 15px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .empty { padding: 30px; text-align: center; color: #a9bfd0; }
+    .back { color: #60e0d2; text-decoration: none; }
+    @media(max-width: 750px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 420px) { .stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">✚ Aidora</div>
+  </header>
+
+  <main class="dashboard">
+    <a class="back" href="index.html">← Back to Home</a>
+
+    <div class="topbar">
+      <div>
+        <div class="tag">RELIEF OPERATIONS</div>
+        <h1>Emergency Dashboard</h1>
+        <p class="muted">Monitor and organize relief requests in one place.</p>
+      </div>
+      <span class="badge low">● Demo dashboard</span>
+    </div>
+
+    <section class="stats">
+      <article class="stat">
+        <div class="stat-label">Total Requests</div>
+        <div class="stat-number" id="total">3</div>
+      </article>
+      <article class="stat">
+        <div class="stat-label">Pending</div>
+        <div class="stat-number" id="pending">2</div>
+      </article>
+      <article class="stat">
+        <div class="stat-label">In Progress</div>
+        <div class="stat-number" id="progress">1</div>
+      </article>
+      <article class="stat">
+        <div class="stat-label">Resolved</div>
+        <div class="stat-number" id="resolved">0</div>
+      </article>
+    </section>
+
+    <h2>Emergency Requests</h2>
+
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search requests or locations..." aria-label="Search requests" />
+
+      <select id="priorityFilter" aria-label="Filter by priority">
+        <option value="all">All priorities</option>
+        <option value="High">High priority</option>
+        <option value="Medium">Medium priority</option>
+        <option value="Low">Low priority</option>
+      </select>
+
+      <select id="statusFilter" aria-label="Filter by status">
+        <option value="all">All statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+      </select>
+    </div>
+
+    <section class="request-list" id="requests" aria-live="polite"></section>
+    <p class="muted">Demo data only. Changes are temporary and will reset when this page is refreshed.</p>
+  </main>
+
+  <footer>© 2026 Aidora · Connecting Help. Delivering Hope.</footer>
+
+  <script>
+    const requests = [
+      { id: 101, title: "Drinking Water Needed", location: "Jaipur, Rajasthan", priority: "High", status: "Pending" },
+      { id: 102, title: "Food Supplies Required", location: "Ajmer, Rajasthan", priority: "Medium", status: "In Progress" },
+      { id: 103, title: "Blankets for Families", location: "Kota, Rajasthan", priority: "High", status: "Pending" }
+    ];
+
+    const list = document.getElementById("requests");
+    const search = document.getElementById("search");
+    const priorityFilter = document.getElementById("priorityFilter");
+    const statusFilter = document.getElementById("statusFilter");
+
+    function updateStats() {
+      document.getElementById("total").textContent = requests.length;
+      document.getElementById("pending").textContent =
+        requests.filter(r => r.status === "Pending").length;
+      document.getElementById("progress").textContent =
+        requests.filter(r => r.status === "In Progress").length;
+      document.getElementById("resolved").textContent =
+        requests.filter(r => r.status === "Resolved").length;
+    }
+
+    function renderRequests() {
+      const query = search.value.trim().toLowerCase();
+      const priority = priorityFilter.value;
+      const status = statusFilter.value;
+
+      const filtered = requests.filter(r => {
+        const matchesText = (r.title + " " + r.location + " " + r.id)
+          .toLowerCase().includes(query);
+        return matchesText &&
+          (priority === "all" || r.priority === priority) &&
+          (status === "all" || r.status === status);
+      });
+
+      list.replaceChildren();
+
+      if (!filtered.length) {
+        const empty = document.createElement("div");
+        empty.className = "request empty";
+        empty.textContent = "No matching requests found.";
+        list.appendChild(empty);
+      }
+
+      filtered.forEach(r => {
+        const card = document.createElement("article");
+        card.className = "request";
+
+        const head = document.createElement("div");
+        head.className = "request-head";
+
+        const details = document.createElement("div");
+        const title = document.createElement("h3");
+        title.textContent = r.title;
+        const location = document.createElement("p");
+        location.className = "muted";
+        location.textContent = "📍 " + r.location + " · Request #" + r.id;
+        details.append(title, location);
+
+        const badge = document.createElement("span");
+        badge.className = "badge " + r.priority.toLowerCase();
+        badge.textContent = r.priority + " Priority";
+
+        head.append(details, badge);
+
+        const statusRow = document.createElement("div");
+        statusRow.className = "status";
+
+        const label = document.createElement("label");
+        label.textContent = "Status:";
+        label.htmlFor = "status-" + r.id;
+
+        const select = document.createElement("select");
+        select.id = "status-" + r.id;
+
+        ["Pending", "In Progress", "Resolved"].forEach(value => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          select.appendChild(option);
+        });
+
+        select.value = r.status;
+        select.addEventListener("change", () => {
+          r.status = select.value;
+          updateStats();
+          renderRequests();
+        });
+
+        statusRow.append(label, select);
+        card.append(head, statusRow);
+        list.appendChild(card);
+      });
+
+      updateStats();
+    }
+
+    search.addEventListener("input", renderRequests);
+    priorityFilter.addEventListener("change", renderRequests);
+    statusFilter.addEventListener("change", renderRequests);
+
+    renderRequests();
+  </script>
+</body>
+</html>
