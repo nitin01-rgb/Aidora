@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#071522" />
+  <meta name="description" content="Aidora volunteer management and relief coordination." />
+  <title>Aidora | Volunteer Management</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    [hidden] { display: none !important; }
+
+    .page {
+      max-width: 1200px;
+      margin: auto;
+      padding: 35px 24px;
+    }
+
+    .back {
+      display: inline-block;
+      color: #60e0d2;
+      text-decoration: none;
+      margin-bottom: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .topbar h1 {
+      margin: 12px 0;
+      font-size: clamp(30px, 5vw, 42px);
+      letter-spacing: -1px;
+    }
+
+    .muted { color: #a9bfd0; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .stat, .panel, .volunteer-card {
+      background: rgba(18, 43, 64, .76);
+      border: 1px solid #ffffff1c;
+      border-radius: 16px;
+      padding: 22px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .stat-label { color: #a9bfd0; font-size: 14px; }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 12px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .toolbar input, .toolbar select, .field input,
+    .field select, .field textarea {
+      width: 100%;
+      padding: 13px;
+      background: #10283d;
+      color: #edf7ff;
+      border: 1px solid #ffffff25;
+      border-radius: 10px;
+      font: inherit;
+    }
+
+    .toolbar input { flex: 1 1 230px; }
+    .toolbar select { flex: 0 1 190px; }
+
+    .toolbar input:focus, .toolbar select:focus,
+    .field input:focus, .field select:focus,
+    .field textarea:focus {
+      outline: 2px solid #60e0d2;
+      outline-offset: 2px;
+    }
+
+    .volunteer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .volunteer-card {
+      min-width: 0;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .volunteer-card:hover {
+      transform: translateY(-3px);
+      border-color: #60e0d277;
+    }
+
+    .volunteer-head {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 18px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: #60e0d21c;
+      border: 1px solid #60e0d244;
+      color: #60e0d2;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .volunteer-head h3 { margin: 0 0 6px; font-size: 18px; }
+    .volunteer-head p { margin: 0; font-size: 13px; }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 25px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .available { background: #176b573b; color: #8ce8ce; }
+    .busy { background: #79551e55; color: #ffda91; }
+    .unavailable { background: #7d292955; color: #ffb6b6; }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 15px 0;
+    }
+
+    .skill {
+      font-size: 12px;
+      padding: 6px 9px;
+      background: #ffffff0b;
+      border: 1px solid #ffffff17;
+      border-radius: 20px;
+      color: #c6d8e7;
+    }
+
+    .volunteer-info {
+      color: #a9bfd0;
+      font-size: 14px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .volunteer-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .volunteer-actions select {
+      min-width: 0;
+      flex: 1;
+      padding: 10px;
+      background: #10283d;
+      color: #edf7ff;
+      border: 1px solid #ffffff25;
+      border-radius: 9px;
+    }
+
+    .secondary-button {
+      padding: 11px 14px;
+      border: 1px solid #ffffff2b;
+      border-radius: 10px;
+      color: #edf7ff;
+      background: #ffffff0b;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .secondary-button:hover { background: #ffffff17; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #dceaf5;
+    }
+
+    .field textarea { min-height: 85px; resize: vertical; }
+    .field.full { grid-column: 1 / -1; }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .action-button {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .empty, .notice {
+      padding: 15px;
+      border-radius: 10px;
+      margin: 16px 0;
+    }
+
+    .empty {
+      text-align: center;
+      color: #a9bfd0;
+      background: #ffffff08;
+      grid-column: 1 / -1;
+    }
+
+    .notice {
+      background: #60e0d210;
+      border: 1px solid #60e0d255;
+      color: #aaf3e9;
+    }
+
+    @media (max-width: 900px) {
+      .volunteer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 650px) {
+      .stats { grid-template-columns: 1fr; }
+      .volunteer-grid, .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .page { padding: 25px 16px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">✚ Aidora</div>
+  </header>
+
+  <main class="page">
+    <a class="back" href="index.html">← Back to Home</a>
+
+    <section class="topbar">
+      <div>
+        <div class="tag">COMMUNITY RESPONSE</div>
+        <h1>Volunteer Management</h1>
+        <p class="muted">
+          Organize volunteers and track their availability and skills.
+        </p>
+      </div>
+
+      <button class="button action-button" id="openFormBtn" type="button">
+        + Add Volunteer
+      </button>
+    </section>
+
+    <section class="stats">
+      <article class="stat">
+        <div class="stat-label">Total Volunteers</div>
+        <div class="stat-number" id="totalCount">4</div>
+      </article>
+      <article class="stat">
+        <div class="stat-label">Available</div>
+        <div class="stat-number" id="availableCount">2</div>
+      </article>
+      <article class="stat">
+        <div class="stat-label">On Assignment</div>
+        <div class="stat-number" id="busyCount">1</div>
+      </article>
+    </section>
+
+    <section class="panel" id="formPanel" hidden>
+      <h2>Register a Volunteer</h2>
+      <p class="muted">Enter volunteer details below.</p>
+
+      <form id="volunteerForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="volunteerName">Full name *</label>
+            <input id="volunteerName" maxlength="80" required
+              placeholder="Enter full name" />
+          </div>
+
+          <div class="field">
+            <label for="volunteerLocation">Location *</label>
+            <input id="volunteerLocation" maxlength="120" required
+              placeholder="City or area" />
+          </div>
+
+          <div class="field">
+            <label for="volunteerSkills">Skills *</label>
+            <input id="volunteerSkills" maxlength="160" required
+              placeholder="First aid, logistics, driving..." />
+          </div>
+
+          <div class="field">
+            <label for="volunteerAvailability">Availability *</label>
+            <select id="volunteerAvailability" required>
+              <option value="Available">Available</option>
+              <option value="On Assignment">On Assignment</option>
+              <option value="Unavailable">Unavailable</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="volunteerNotes">Additional information</label>
+            <textarea id="volunteerNotes" maxlength="300"
+              placeholder="Experience or additional notes (optional)"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="button action-button" type="submit">
+            Register Volunteer
+          </button>
+          <button class="secondary-button" id="cancelFormBtn" type="button">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <div id="notice" class="notice" role="status" hidden></div>
+
+    <section class="toolbar">
+      <input id="searchInput" type="search"
+        placeholder="Search name, skill or location..."
+        aria-label="Search volunteers" />
+
+      <select id="availabilityFilter" aria-label="Filter by availability">
+        <option value="all">All availability</option>
+        <option value="Available">Available</option>
+        <option value="On Assignment">On Assignment</option>
+        <option value="Unavailable">Unavailable</option>
+      </select>
+    </section>
+
+    <section class="volunteer-grid" id="volunteerGrid"
+      aria-live="polite" aria-label="Volunteer directory"></section>
+
+    <p class="muted">
+      Demo mode: information is temporary and will reset when this page is refreshed.
+      Connect a backend and database before using real volunteer records.
+    </p>
+  </main>
+
+  <footer>© 2026 Aidora · Connecting Help. Delivering Hope.</footer>
+
+  <script>
+    "use strict";
+
+    const volunteers = [
+      {
+        id: 1,
+        name: "Aarav Sharma",
+        location: "Jaipur, Rajasthan",
+        skills: ["First Aid", "Emergency Support"],
+        availability: "Available",
+        notes: "Sample volunteer profile."
+      },
+      {
+        id: 2,
+        name: "Meera Singh",
+        location: "Ajmer, Rajasthan",
+        skills: ["Food Distribution", "Logistics"],
+        availability: "On Assignment",
+        notes: "Sample volunteer profile."
+      },
+      {
+        id: 3,
+        name: "Kabir Verma",
+        location: "Kota, Rajasthan",
+        skills: ["Transport", "Supply Delivery"],
+        availability: "Available",
+        notes: "Sample volunteer profile."
+      },
+      {
+        id: 4,
+        name: "Ananya Patel",
+        location: "Udaipur, Rajasthan",
+        skills: ["First Aid", "Community Support"],
+        availability: "Unavailable",
+        notes: "Sample volunteer profile."
+      }
+    ];
+
+    let nextId = 5;
+
+    const grid = document.getElementById("volunteerGrid");
+    const form = document.getElementById("volunteerForm");
+    const formPanel = document.getElementById("formPanel");
+    const searchInput = document.getElementById("searchInput");
+    const availabilityFilter = document.getElementById("availabilityFilter");
+    const notice = document.getElementById("notice");
+
+    function makeElement(tag, className, text) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      if (text !== undefined) element.textContent = text;
+      return element;
+    }
+
+    function showNotice(message) {
+      notice.textContent = message;
+      notice.hidden = false;
+    }
+
+    function updateStats() {
+      document.getElementById("totalCount").textContent = volunteers.length;
+      document.getElementById("availableCount").textContent =
+        volunteers.filter(v => v.availability === "Available").length;
+      document.getElementById("busyCount").textContent =
+        volunteers.filter(v => v.availability === "On Assignment").length;
+    }
+
+    function renderVolunteers() {
+      const query = searchInput.value.trim().toLowerCase();
+      const availability = availabilityFilter.value;
+
+      const filtered = volunteers.filter(volunteer => {
+        const text = [
+          volunteer.name,
+          volunteer.location,
+          volunteer.skills.join(" "),
+          volunteer.notes
+        ].join(" ").toLowerCase();
+
+        return text.includes(query) &&
+          (availability === "all" || volunteer.availability === availability);
+      });
+
+      grid.replaceChildren();
+
+      if (filtered.length === 0) {
+        grid.appendChild(makeElement(
+          "div",
+          "empty",
+          "No volunteers found. Try changing the search or filter."
+        ));
+      }
+
+      filtered.forEach(volunteer => {
+        const card = makeElement("article", "volunteer-card");
+        const head = makeElement("div", "volunteer-head");
+        const initials = volunteer.name
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 2)
+          .map(part => part.charAt(0).toUpperCase())
+          .join("");
+
+        const avatar = makeElement("div", "avatar", initials);
+        const identity = makeElement("div");
+        identity.append(
+          makeElement("h3", "", volunteer.name),
+          makeElement("p", "muted", volunteer.location)
+        );
+        head.append(avatar, identity);
+
+        const statusClass = {
+          "Available": "available",
+          "On Assignment": "busy",
+          "Unavailable": "unavailable"
+        }[volunteer.availability];
+
+        const badge = makeElement(
+          "span",
+          "badge " + statusClass,
+          volunteer.availability
+        );
+
+        const skillList = makeElement("div", "skill-list");
+        volunteer.skills.forEach(skill => {
+          skillList.appendChild(makeElement("span", "skill", skill));
+        });
+
+        const notes = makeElement(
+          "p",
+          "volunteer-info",
+          volunteer.notes || "No additional information."
+        );
+
+        const actions = makeElement("div", "volunteer-actions");
+        const label = makeElement("label", "muted", "Status");
+        const select = makeElement("select");
+        select.setAttribute("aria-label", "Availability for " + volunteer.name);
+
+        ["Available", "On Assignment", "Unavailable"].forEach(value => {
+          const option = makeElement("option", "", value);
+          option.value = value;
+          select.appendChild(option);
+        });
+
+        select.value = volunteer.availability;
+
+        select.addEventListener("change", () => {
+          volunteer.availability = select.value;
+          updateStats();
+          renderVolunteers();
+          showNotice("Availability updated for " + volunteer.name + ".");
+        });
+
+        actions.append(label, select);
+        card.append(head, badge, skillList, notes, actions);
+        grid.appendChild(card);
+      });
+
+      updateStats();
+    }
+
+    document.getElementById("openFormBtn").addEventListener("click", () => {
+      formPanel.hidden = false;
+      notice.hidden = true;
+      formPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("volunteerName").focus();
+    });
+
+    document.getElementById("cancelFormBtn").addEventListener("click", () => {
+      form.reset();
+      formPanel.hidden = true;
+      notice.hidden = true;
+    });
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const name = document.getElementById("volunteerName").value.trim();
+      const location = document.getElementById("volunteerLocation").value.trim();
+      const rawSkills = document.getElementById("volunteerSkills").value;
+      const availability = document.getElementById("volunteerAvailability").value;
+      const notes = document.getElementById("volunteerNotes").value.trim();
+
+      const skills = rawSkills
+        .split(",")
+        .map(skill => skill.trim())
+        .filter(Boolean);
+
+      if (!name || !location || skills.length === 0) {
+        showNotice("Please enter a name, location and at least one skill.");
+        return;
+      }
+
+      volunteers.unshift({
+        id: nextId++,
+        name,
+        location,
+        skills,
+        availability,
+        notes: notes || "Newly registered volunteer."
+      });
+
+      form.reset();
+      formPanel.hidden = true;
+      searchInput.value = "";
+      availabilityFilter.value = "all";
+
+      renderVolunteers();
+      showNotice("Volunteer added successfully in demo mode.");
+    });
+
+    searchInput.addEventListener("input", renderVolunteers);
+    availabilityFilter.addEventListener("change", renderVolunteers);
+
+    renderVolunteers();
+  </script>
+</body>
+</html>
