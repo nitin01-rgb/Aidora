@@ -1,18 +1,12 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aidora | Login</title>
-
+  <title>Aidora | Login & Sign Up</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -22,25 +16,21 @@
       padding: 20px;
       font-family: Arial, sans-serif;
       color: #f4f8ff;
-      background:
-        radial-gradient(circle at top left, #123c60, transparent 40%),
-        linear-gradient(135deg, #07111f, #0b1c30);
+      background: radial-gradient(circle at top left, #123c60, transparent 40%),
+                  linear-gradient(135deg, #07111f, #0b1c30);
     }
 
     .card {
       width: 100%;
       max-width: 420px;
-      padding: 34px;
-      border: 1px solid rgba(91, 213, 255, 0.25);
+      padding: 32px;
+      border: 1px solid rgba(91, 213, 255, .25);
       border-radius: 22px;
-      background: rgba(15, 32, 52, 0.94);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      background: rgba(15, 32, 52, .96);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
     }
 
-    .brand {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+    .brand { text-align: center; margin-bottom: 26px; }
 
     .logo {
       display: inline-grid;
@@ -55,14 +45,8 @@
       font-weight: 800;
     }
 
-    h1 {
-      font-size: 30px;
-      letter-spacing: -1px;
-    }
-
-    h1 span {
-      color: #43d3ff;
-    }
+    h1 { font-size: 30px; letter-spacing: -1px; }
+    h1 span { color: #43d3ff; }
 
     .subtitle {
       margin-top: 8px;
@@ -76,7 +60,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 6px;
       padding: 5px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       border-radius: 12px;
       background: #091626;
     }
@@ -87,15 +71,11 @@
       padding: 12px;
       color: #a9bbd0;
       background: transparent;
-      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
     }
 
-    .tab.active {
-      background: #35c8f2;
-      color: #061321;
-    }
+    .tab.active { background: #35c8f2; color: #061321; }
 
     label {
       display: block;
@@ -115,10 +95,7 @@
       font-size: 15px;
     }
 
-    input:focus {
-      border-color: #43d3ff;
-      box-shadow: 0 0 0 3px rgba(67, 211, 255, 0.1);
-    }
+    input:focus { border-color: #43d3ff; }
 
     .submit {
       width: 100%;
@@ -133,10 +110,7 @@
       cursor: pointer;
     }
 
-    .submit:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
+    .submit:disabled { opacity: .6; cursor: wait; }
 
     #message {
       display: none;
@@ -148,94 +122,171 @@
       overflow-wrap: anywhere;
     }
 
-    #message.show {
-      display: block;
-    }
-
-    #message.error {
-      background: rgba(255, 85, 85, 0.12);
-      color: #ffaaaa;
-    }
-
-    #message.success {
-      background: rgba(58, 220, 160, 0.12);
-      color: #8af0c8;
-    }
+    #message.show { display: block; }
+    #message.error { background: rgba(255,85,85,.12); color: #ffaaaa; }
+    #message.success { background: rgba(58,220,160,.12); color: #8af0c8; }
 
     .footer {
-      margin-top: 22px;
+      margin-top: 20px;
       color: #8397ae;
       text-align: center;
       font-size: 12px;
       line-height: 1.6;
     }
 
-    .footer a {
-      color: #43d3ff;
-      text-decoration: none;
-    }
-
     @media (max-width: 420px) {
-      .card {
-        padding: 25px 20px;
-      }
+      .card { padding: 25px 20px; }
     }
   </style>
 </head>
 
 <body>
-    <div class="card">
+  <main class="card">
     <div class="brand">
       <div class="logo">A</div>
-      <h1>Aidora <span>Login</span></h1>
+      <h1>Aidora <span id="heading">Login</span></h1>
       <p class="subtitle">Connecting Help. Delivering Hope.</p>
     </div>
 
-    <form id="loginForm">
+    <div class="tabs">
+      <button type="button" class="tab active" id="loginTab">Login</button>
+      <button type="button" class="tab" id="signupTab">Sign Up</button>
+    </div>
+
+    <form id="authForm">
+      <div id="nameField" hidden>
+        <label for="fullName">Full Name</label>
+        <input id="fullName" type="text" autocomplete="name" placeholder="Enter your name">
+      </div>
+
       <label for="email">Email</label>
-      <input id="email" type="email" placeholder="Enter your email" required>
+      <input id="email" type="email" autocomplete="email"
+             placeholder="Enter your email" required>
 
       <label for="password">Password</label>
-      <input id="password" type="password" placeholder="Enter your password" required>
+      <input id="password" type="password" autocomplete="current-password"
+             minlength="6" placeholder="At least 6 characters" required>
 
-      <button class="submit" type="submit">Login</button>
-      <p id="message"></p>
+      <button class="submit" id="submitBtn" type="submit">Login</button>
+      <p id="message" role="status" aria-live="polite"></p>
     </form>
-    <p class="footer">Need an account? <a href="#" id="signupLink">Sign up</a></p>
-  </div>
+
+    <p class="footer">Connecting communities with people who need help.</p>
+  </main>
 
   <script>
+    const SUPABASE_URL = "https://alwmquaohyfmgegthjnn.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_g4wjIBtXVdwqf8ti7fxNMg_vwJ8JXi8";
+
     const client = window.supabase.createClient(
-      "https://alwmquaohyfmgegthjnn.supabase.co",
-      "sb_publishable_g4wjIBtXVdwqf8ti7fxNMg_vwJ8JXi8"
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
     );
 
-    const form = document.getElementById("loginForm");
+    const form = document.getElementById("authForm");
+    const loginTab = document.getElementById("loginTab");
+    const signupTab = document.getElementById("signupTab");
+    const nameField = document.getElementById("nameField");
+    const fullName = document.getElementById("fullName");
+    const heading = document.getElementById("heading");
+    const submitBtn = document.getElementById("submitBtn");
     const message = document.getElementById("message");
+    const password = document.getElementById("password");
+
+    let mode = "login";
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = "show " + type;
+    }
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      const isSignup = mode === "signup";
+
+      heading.textContent = isSignup ? "Sign Up" : "Login";
+      submitBtn.textContent = isSignup ? "Create Account" : "Login";
+      nameField.hidden = !isSignup;
+      fullName.required = isSignup;
+      password.autocomplete = isSignup ? "new-password" : "current-password";
+
+      loginTab.classList.toggle("active", !isSignup);
+      signupTab.classList.toggle("active", isSignup);
+
+      message.className = "";
+      message.textContent = "";
+    }
+
+    loginTab.addEventListener("click", () => setMode("login"));
+    signupTab.addEventListener("click", () => setMode("signup"));
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      message.className = "show";
-      message.textContent = "Logging in...";
 
-      const { error } = await client.auth.signInWithPassword({
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value
-      });
+      submitBtn.disabled = true;
+      showMessage(
+        mode === "signup" ? "Creating your account..." : "Logging in...",
+        "success"
+      );
 
-      if (error) {
-        message.className = "show error";
-        message.textContent = error.message;
-        return;
+      try {
+        const email = document.getElementById("email").value.trim();
+        const passwordValue = password.value;
+
+        if (passwordValue.length < 6) {
+          throw new Error("Password must be at least 6 characters.");
+        }
+
+        if (mode === "signup") {
+          const name = fullName.value.trim();
+
+          if (!name) {
+            throw new Error("Please enter your full name.");
+          }
+
+          const { data, error } = await client.auth.signUp({
+            email,
+            password: passwordValue,
+            options: {
+              data: { full_name: name }
+            }
+          });
+
+          if (error) throw error;
+
+          if (data.session) {
+            showMessage("Account created! Opening Aidora...", "success");
+            window.location.replace("index.html");
+          } else {
+            showMessage(
+              "Account created! Check your email for a confirmation link, then return here to log in.",
+              "success"
+            );
+            setMode("login");
+          }
+        } else {
+          const { error } = await client.auth.signInWithPassword({
+            email,
+            password: passwordValue
+          });
+
+          if (error) throw error;
+
+          showMessage("Login successful! Opening Aidora...", "success");
+          window.location.replace("index.html");
+        }
+      } catch (error) {
+        showMessage(error.message || "Something went wrong. Please try again.", "error");
+      } finally {
+        submitBtn.disabled = false;
       }
-
-      window.location.href = "index.html";
     });
 
-    document.getElementById("signupLink").addEventListener("click", (event) => {
-      event.preventDefault();
-      message.className = "show";
-      message.textContent = "Signup form abhi add nahi hua hai.";
+    client.auth.getSession().then(({ data, error }) => {
+      if (!error && data.session) {
+        window.location.replace("index.html");
+      }
     });
   </script>
 </body>
